@@ -6,8 +6,6 @@ clean:
 	rm -r ~/dotfiles/emacs
 
 emacs:
-	git clone https://github.com/syl20bnr/spacemacs ~/dotfiles/emacs/.emacs.d
-	git clone https://github.com/BenjaminSaintCyr/.spacemacs.d ~/dotfiles/emacs/.spacemacs.d
 	mkdir -p ~/dotfiles/.spacemacs.d/layers/exwm
 	git clone https://github.com/timor/spacemacsOS ~/dotfiles/emacs/.spacemacs.d/layers/exwm
 
