@@ -2,6 +2,12 @@ PM=guix install
 
 all: repos
 
+emacs:
+	git clone https://github.com/syl20bnr/spacemacs ~/dotfiles/emacs/.emacs.d
+	git clone https://github.com/BenjaminSaintCyr/.spacemacs.d ~/dotfiles/emacs/.spacemacs.d
+	mkdir -p ~/dotfiles/.spacemacs.d/layers/exwm
+	git clone https://github.com/timor/spacemacsOS ~/dotfiles/emacs/.spacemacs.d/layers/exwm
+
 clean:
 	rm -r ~/dotfiles/emacs
 
@@ -21,5 +27,5 @@ node: system
 python: system
 	$(PM) python3 python3-pip
 
-exwm:
+exwm: emacs
 	sudo -ln -f ~/dotfiles/.spacemacs.d/layers/exwm/files/exwm.desktop /usr/share/xsession/EXWM.desktop
