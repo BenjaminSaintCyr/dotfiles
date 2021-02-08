@@ -5,13 +5,8 @@ all: repos
 clean:
 	rm -r ~/dotfiles/emacs
 
-emacs:
-	mkdir -p ~/dotfiles/.spacemacs.d/layers/exwm
-	git clone https://github.com/timor/spacemacsOS ~/dotfiles/emacs/.spacemacs.d/layers/exwm
-
 system:
 	$(PM) git htop tree stow
-
 
 go: system
 	$(PM) go
@@ -26,5 +21,5 @@ node: system
 python: system
 	$(PM) python3 python3-pip
 
-exwm: emacs
+exwm:
 	sudo -ln -f ~/dotfiles/.spacemacs.d/layers/exwm/files/exwm.desktop /usr/share/xsession/EXWM.desktop
