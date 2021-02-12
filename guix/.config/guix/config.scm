@@ -9,15 +9,15 @@
   (locale "en_US.utf8")
   (timezone "America/New_York")
   (keyboard-layout (keyboard-layout "us"))
-  (host-name "ben-guix")
+  (host-name "ben")
   (users (cons* (user-account
-		  (name "benjamin")
-		  (comment "Benjamin")
-		  (group "users")
-		  (home-directory "/home/benjamin")
-		  (supplementary-groups
-		    '("wheel" "netdev" "audio" "video")))
-		%base-user-accounts))
+                 (name "benjamin")
+                 (comment "Benjamin")
+                 (group "users")
+                 (home-directory "/home/benjamin")
+                 (supplementary-groups
+                  '("wheel" "netdev" "audio" "video")))
+                %base-user-accounts))
   (packages
     (append
       (list (specification->package "emacs")
@@ -26,28 +26,27 @@
 	      "emacs-desktop-environment")
 	    (specification->package "nss-certs"))
       %base-packages))
-  (bootloader 
-    (bootloader-configuration
-		(bootloader grub-efi-bootloader)
-		(target "/boot/efi")
-		(keyboard-layout keyboard-layout)))
+  (bootloader
+   (bootloader-configuration
+    (bootloader grub-bootloader)
+    (target "/dev/sda")
+    (keyboard-layout keyboard-layout)))
   (firmware (append
 	      (list iwlwifi-firmware)
 	      %base-firmware))
-  (file-systems 
-    (cons* (file-system
-	     (mount-point "/")
-	     (device (uuid "b2b96101-1af5-4204-98c0-c6c5a0a0fe21" 'ext4))
-	     ;;(device (file-system-label "my-root"))
-	     (type "ext4"))
-	   (file-system
-	     (mount-point "/boot/efi")
-	     (device (uuid "0CBA-7E00" 'fat32))
-	     (type "vfat"))
-	   %base-file-systems))
-  (services %desktop-services))
+  (swap-devices
+   (list (uuid "58c92de0-1480-4b50-9854-65ecf476f35c")))
+  (file-systems
+   (cons* (file-system
+           (mount-point "/")
+           (device
+            (uuid "609cf06f-8258-41cc-87d9-c5452558e7fa"
+                  'ext4))
+           (type "ext4"))
+          %base-file-systems))
+  (services (append (list (service gnome-desktop-service-type)
+                          (set-xorg-configuration
+                           (xorg-configuration
+                            (keyboard-layout keyboard-layout))))
+                    %desktop-services)))
 
-
-
-;;/dev/nvme0n1p6: LABEL="system-root" UUID="b2b96101-1af5-4204-98c0-c6c5a0a0fe21" BLOCK_SIZE="4096" TYPE="ext4" PARTLABEL="guixsd-partition" PARTUUID="672228d8-70e5-4e83-89de-10a90f68a7d3"
-;;/dev/nvme0n1p1: LABEL="SYSTEM_DRV" UUID="0CBA-7E00" BLOCK_SIZE="512" TYPE="vfat" PARTLABEL="EFI system partition" PARTUUID="f1c109b6-fd89-46e5-976a-28c4f98ff913"
