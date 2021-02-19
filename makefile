@@ -41,4 +41,4 @@ email: emacs
 	mbsync -a
 
 exwm: emacs
-	sudo -ln -f ~/dotfiles/.spacemacs.d/layers/exwm/files/exwm.desktop /usr/share/xsession/EXWM.desktop
+	sudo ln -f ~/dotfiles/emacs/.spacemacs.d/layers/exwm/files/exwm.desktop /usr/share/xsession/EXWM.desktop
