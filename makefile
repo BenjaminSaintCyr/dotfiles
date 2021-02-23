@@ -1,14 +1,18 @@
-PM=guix install
+PM=sudo apt install
 
 all: emacs
 
+
 install: emacs system email
+
 
 clean:
 	rm -r ~/dotfiles/emacs
 
+
 system:
 	$(PM) git htop tree stow pandoc screenfetch
+
 
 golang: system
 	$(PM) golang golang-golang-x-tools golint
@@ -17,28 +21,48 @@ golang: system
   GO111MODULE=on go get -v golang.org/x/tools/gopls@latest
 	export PATH=$PATH:$(go env GOPATH)/bin
 
+
 node: system
 	$(PM) node
 	npm install eslint
 	npm install -g typescript typescript-formatter typescript
 
+
 python: system
 	$(PM) python3 python3-pip
 
+
 emacs: spacemacs vterm email exwm
+
 
 spacemacs:
 	git clone https://github.com/syl20bnr/spacemacs ~/dotfiles/emacs/.emacs.d
 	git clone https://github.com/BenjaminSaintCyr/.spacemacs.d ~/dotfiles/emacs/.spacemacs.d
 	git clone https://github.com/timor/spacemacsOS ~/dotfiles/emacs/.spacemacs.d/layers/exwm
 
+
 vterm: 
 	$(PM) cmake libvterm0 libtool-bin
+
 
 email: emacs
 	$(PM) maildir-utils isync
 	mkdir ~/Mail
 	mbsync -a
 
+
 exwm: emacs
 	sudo ln -f ~/dotfiles/emacs/.spacemacs.d/layers/exwm/files/exwm.desktop /usr/share/xsession/EXWM.desktop
+
+
+clojure:
+	$(PM) clojure leiningen	
+
+
+clisp:
+	$(PM) sbcl slime
+	curl -o /tmp/ql.lisp http://beta.quicklisp.org/quicklisp.lisp
+	sbcl --no-sysinit --no-userinit --load /tmp/ql.lisp \
+       --eval '(quicklisp-quickstart:install :path "~/.quicklisp")' \
+       --eval '(ql:add-to-init-file)' \
+       --quit
