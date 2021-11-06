@@ -3,6 +3,7 @@
    "gcc-toolchain"
    "clang"
    "spin"
+   "tcl"
    ;; tools
    "gdb"
    "git"
@@ -28,7 +29,14 @@
    "bc"
    "perf"
    "grpc"
-   "tbb"))
+   "tbb"
+   "freeglut"
+   "glew"
+   ;;; opencl
+   "opencl-headers"
+   "opencl-icd-loader"
+   "pocl"
+   ))
 
 ;; BUILD
 ;; guix package -m ~/.config/guix/manifests/school.scm -p .guix-extra-profiles/school/school
