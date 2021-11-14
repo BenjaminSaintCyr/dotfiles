@@ -1,11 +1,11 @@
 (specifications->manifest
  '(;; clojure
-   leiningmen
-   clojure
+   "leiningen"
+   "clojure"
    ;; lisp
-   sbcl
+   "sbcl"
    ;; f#
-   dotnet
+   "dotnet"
    ;; ocaml
-   opam
+   "opam"
    ))
