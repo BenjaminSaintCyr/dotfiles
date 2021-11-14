@@ -4,3 +4,6 @@
 
 [credential]
 	helper = store
+
+[diff "odf"]
+      textconv=odt2txt
