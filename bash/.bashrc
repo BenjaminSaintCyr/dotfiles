@@ -20,11 +20,15 @@ fi
 source /etc/bashrc
 
 # Adjust the prompt depending on whether we're in 'guix environment'.
+YELLOW="\e[1;33m"
+LILA="\e[1;35m"
+GREEN="\e[32m"
+ENDCOLOR="\e[0m"
 if [ -n "$GUIX_ENVIRONMENT" ]
 then
-    PS1='\u@\h \w [env]\$ '
+    PS1="┌─ ${YELLOW}🖿 \w ${ENDCOLOR}| ${LILA}🤠 \u@\h${ENDCOLOR} | ${GREEN}🕒 \t${ENDCOLOR} | [ENV] \n└─> "
 else
-    PS1='\u@\h \w\$ '
+    PS1="┌─ ${YELLOW}🖿 \w ${ENDCOLOR}| ${LILA}🤠 \u@\h${ENDCOLOR} | ${GREEN}🕒 \t${ENDCOLOR} \n└─> "
 fi
 alias ls='ls -p --color=auto'
 alias ll='ls -l'
