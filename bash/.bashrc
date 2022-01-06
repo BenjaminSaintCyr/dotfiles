@@ -17,7 +17,7 @@ then
 fi
 
 # Source the system-wide file.
-source /etc/bashrc
+# source /etc/bashrc
 
 # Adjust the prompt depending on whether we're in 'guix environment'.
 YELLOW="\e[1;33m"
@@ -30,9 +30,17 @@ then
 else
     PS1="┌─ ${YELLOW}🖿 \w ${ENDCOLOR}| ${LILA}🤠 \u@\h${ENDCOLOR} | ${GREEN}🕒 \t${ENDCOLOR} \n└─> "
 fi
-alias ls='ls -p --color=auto'
-alias ll='ls -l'
-alias grep='grep --color=auto'
-alias mk='make -j 8'
-alias emacs='emacsclient -c -a "" "$@"'
-alias env='guix environment -m'
+
+CORES="$(grep -c ^processor /proc/cpuinfo)"
+
+# cmd
+alias ls="ls -p --color=auto"
+alias ll="ls -l"
+alias grep="grep --color=auto"
+alias mk="make -j ${CORES}"
+# apps
+alias emacs="emacsclient -c -a \"\" $@"
+# os
+alias env="guix environment -m"
+alias bu="sudo apt -y update && sudo apt -y upgrade && sudo apt -y autoremove" # big update
+export PATH=~/.local/bin/:$PATH
