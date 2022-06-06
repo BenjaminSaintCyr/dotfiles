@@ -90,3 +90,6 @@ kvm:
 k8s: minikube-linux-amd64 kvm
 	sudo install minikube-linux-amd64 /usr/local/bin/minikube
 	minikube start
+
+lttng:
+	$(APT) lttng-tools lttng-modules-dkms
