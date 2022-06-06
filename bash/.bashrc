@@ -43,4 +43,6 @@ alias emacs="emacsclient -c -a \"\" $@"
 # os
 alias env="guix environment -m"
 alias bu="sudo apt -y update && sudo apt -y upgrade && sudo apt -y autoremove" # big update
+alias qi="sudo apt -y install" # quick install
+alias qu="sudo apt -y update" # quick update
 export PATH=~/.local/bin/:$PATH
