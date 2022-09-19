@@ -28,7 +28,7 @@ if [ -n "$GUIX_ENVIRONMENT" ]
 then
     PS1="┌─ ${YELLOW}🖿 \w ${ENDCOLOR}| ${LILA}🤠 \u@\h${ENDCOLOR} | ${GREEN}🕒 \t${ENDCOLOR} | [ENV] \n└─> "
 else
-    PS1="┌─ ${YELLOW}🖿 \w ${ENDCOLOR}| ${LILA}🤠 \u@\h${ENDCOLOR} | ${GREEN}🕒 \t${ENDCOLOR} \n└─> "
+    PS1="┌─ ${YELLOW}🖿 \w ${ENDCOLOR}| ${LILA}\u@\h${ENDCOLOR} | ${GREEN}🕒 \t${ENDCOLOR} \n└─> "
 fi
 
 CORES="$(grep -c ^processor /proc/cpuinfo)"
