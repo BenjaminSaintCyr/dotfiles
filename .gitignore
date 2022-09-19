@@ -1,2 +1,3 @@
 emacs/.spacemacs.d
 emacs/.emacs.d
+*.~undo-tree~
