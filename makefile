@@ -1,13 +1,14 @@
 APT=sudo apt install -y
 APT-U=sudo apt update -y
 TMPDIR := $(shell mktemp -d)
+GC=git clone --depth 1 # shallow git clone (just download)
 
 all: emacs
 
 install: debian emacs rice
 
 clean:
-	rm -rf ~/.icons/capitaine-cursors ~/.themes/* #~/dotfiles/emacs 
+	rm -rf ~/.icons/capitaine-cursors ~/.themes/* _output #~/dotfiles/emacs 
 
 # system
 
@@ -17,32 +18,14 @@ guix: emacs
 debian:
 	$(APT) git htop tree stow pandoc screenfetch bashtop cmake libvterm0 libtool-bin
 
-# rice
-
-rice: ~/.icons/capitaine-cursors icons ~/.themes/Orchis
-
-~/.icons/capitaine-cursors:
-	$(APT) inkscape x11-apps
-	git clone https://github.com/keeferrourke/capitaine-cursors.git $(TMPDIR)/cursor
-	cd $(TMPDIR)/cursor && ./build.sh
-	mkdir -p ~/.icons/capitaine-cursors
-	cp -pr $(TMPDIR)/cursor/dist/dark/* ~/.icons/capitaine-cursors
-
-icons:
-	$(APT) numix-icon-theme-circle
-
-~/.themes/Orchis:
-	git clone https://github.com/vinceliuice/Orchis-theme.git $(TMPDIR)/theme
-	cd $(TMPDIR)/theme && ./install.sh
-
 # emacs
 
 emacs: spacemacs
 	stow emacs
 
 spacemacs:
-	git clone https://github.com/syl20bnr/spacemacs ~/dotfiles/emacs/.emacs.d
-	git clone https://github.com/BenjaminSaintCyr/.spacemacs.d ~/dotfiles/emacs/.spacemacs.d
+	git clone https://github.com/syl20bnr/spacemacs emacs/.emacs.d
+	git clone https://github.com/BenjaminSaintCyr/.spacemacs.d emacs/.spacemacs.d
 
 # prog
 
@@ -65,6 +48,8 @@ clisp:
        --eval '(ql:add-to-init-file)' \
        --quit
 
+# Programming utilities
+
 minikube-linux-amd64:
 	curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 
@@ -80,8 +65,6 @@ docker:
 
 	sudo usermod -aG docker ${USER}
 
-
-
 kvm:
 	sudo modprobe kvm
 	sudo modprobe kvm_intel
@@ -93,3 +76,40 @@ k8s: minikube-linux-amd64 kvm
 
 lttng:
 	$(APT) lttng-tools lttng-modules-dkms
+
+
+~/.cargo/env:
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+	source "$HOME/.cargo/env"
+
+rust: ~/.cargo/env
+	$(APT) rustc cargo
+
+# rice
+
+rice: ~/.icons/capitaine-cursors ~/.themes/Orchis eww
+	$(APT) numix-icon-theme-circle polybar
+
+~/.icons/capitaine-cursors:
+	$(APT) inkscape x11-apps
+	$(GC) https://github.com/keeferrourke/capitaine-cursors.git $(TMPDIR)/cursor
+	cd $(TMPDIR)/cursor && ./build.sh
+	mkdir -p ~/.icons/capitaine-cursors
+	cp -pr $(TMPDIR)/cursor/dist/dark/* ~/.icons/capitaine-cursors
+
+
+~/.themes/Orchis:
+	$(GC) https://github.com/vinceliuice/Orchis-theme.git $(TMPDIR)/theme
+	cd $(TMPDIR)/theme && ./install.sh
+
+_output/eww: rust
+	# TODO fix
+	mkdir -p _output
+	$(GC) https://github.com/elkowar/eww $(TMPDIR)/eww
+	$(APT) libgtk-3-dev libgtk-layer-shell-dev
+	(cd $(TMPDIR)/eww && cargo build --release --no-default-features --features=wayland)
+	chmod +x $(TMPDIR)/eww/target/release/eww
+	cp $(TMPDIR)/eww/target/release/eww _output/
+
+xfce:
+	sudo ln -s /var/lib/snapd/desktop/applications /usr/share/applications/snapd # FIX snapd packages in menu
