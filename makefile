@@ -8,7 +8,7 @@ all: emacs
 install: debian emacs rice
 
 clean:
-	rm -rf ~/.icons/capitaine-cursors ~/.themes/* _output #~/dotfiles/emacs 
+	rm -rf ~/.icons/capitaine-cursors ~/.themes/* bin #~/dotfiles/emacs 
 
 # system
 
@@ -102,14 +102,14 @@ rice: ~/.icons/capitaine-cursors ~/.themes/Orchis eww
 	$(GC) https://github.com/vinceliuice/Orchis-theme.git $(TMPDIR)/theme
 	cd $(TMPDIR)/theme && ./install.sh
 
-_output/eww: rust
+bin/eww: rust
 	# TODO fix
-	mkdir -p _output
+	mkdir -p bin
 	$(GC) https://github.com/elkowar/eww $(TMPDIR)/eww
 	$(APT) libgtk-3-dev libgtk-layer-shell-dev
 	(cd $(TMPDIR)/eww && cargo build --release --no-default-features --features=wayland)
 	chmod +x $(TMPDIR)/eww/target/release/eww
-	cp $(TMPDIR)/eww/target/release/eww _output/
+	cp $(TMPDIR)/eww/target/release/eww bin
 
 xfce:
 	sudo ln -s /var/lib/snapd/desktop/applications /usr/share/applications/snapd # FIX snapd packages in menu

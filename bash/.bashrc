@@ -46,7 +46,8 @@ alias bu="sudo apt -y update && sudo apt -y upgrade && sudo apt -y autoremove" #
 alias qi="sudo apt -y install" # quick install
 alias qu="sudo apt -y update" # quick update
 export PATH=~/.local/bin/:$PATH
-export PATH=~/dotfiles/_output/:$PATH
+export PATH=~/dotfiles/bin/:$PATH
+
 
 alias kubectl="minikube kubectl --"
 . "$HOME/.cargo/env"

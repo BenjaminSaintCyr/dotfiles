@@ -1,4 +1,4 @@
 emacs/.spacemacs.d
 emacs/.emacs.d
 *.~undo-tree~
-_output/
+bin
