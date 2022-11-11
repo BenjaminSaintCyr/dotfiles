@@ -23,9 +23,13 @@ debian:
 emacs: spacemacs
 	stow emacs
 
-spacemacs:
-	git clone https://github.com/syl20bnr/spacemacs emacs/.emacs.d
-	git clone https://github.com/BenjaminSaintCyr/.spacemacs.d emacs/.spacemacs.d
+spacemacs: emacs/.emacs.d emacs/.spacemacs.d
+
+emacs/.emacs.d:
+	git clone https://github.com/syl20bnr/spacemacs $@
+
+emacs/.spacemacs.d:
+	git clone https://github.com/BenjaminSaintCyr/.spacemacs.d $@
 
 # prog
 
@@ -102,14 +106,23 @@ rice: ~/.icons/capitaine-cursors ~/.themes/Orchis eww
 	$(GC) https://github.com/vinceliuice/Orchis-theme.git $(TMPDIR)/theme
 	cd $(TMPDIR)/theme && ./install.sh
 
-bin/eww: rust
-	# TODO fix
-	mkdir -p bin
-	$(GC) https://github.com/elkowar/eww $(TMPDIR)/eww
-	$(APT) libgtk-3-dev libgtk-layer-shell-dev
-	(cd $(TMPDIR)/eww && cargo build --release --no-default-features --features=wayland)
-	chmod +x $(TMPDIR)/eww/target/release/eww
-	cp $(TMPDIR)/eww/target/release/eww bin
+# ** eww
+/tmp/eww:
+	$(GC) --branch v0.4.0 https://github.com/elkowar/eww $@
 
+/tmp/eww/target/release/eww:
+	$(APT) libgtk-3-dev libgtk-layer-shell-dev
+#	-rustup component add rust-src rustc-dev llvm-tools-preview
+#	-cargo +nightly install racer
+	(cd /tmp/eww && cargo build --release --no-default-features) # --features=wayland
+	chmod +x $@
+
+bin/eww: rust /tmp/eww /tmp/eww/target/release/eww
+	mkdir -p bin
+	cp /tmp/eww/target/release/eww bin/
+
+eww: bin/eww
+
+# ** xfce
 xfce:
 	sudo ln -s /var/lib/snapd/desktop/applications /usr/share/applications/snapd # FIX snapd packages in menu
