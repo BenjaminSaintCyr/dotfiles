@@ -54,17 +54,12 @@ clisp:
 
 # Programming utilities
 
-minikube-linux-amd64:
-	curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-
 docker:
 	$(APT) ca-certificates curl gnupg lsb-release
 	sudo mkdir -p /etc/apt/keyrings
 	curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 	echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
 	$(APT-U)
-
 	$(APT) docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 	sudo usermod -aG docker ${USER}
@@ -74,20 +69,22 @@ kvm:
 	sudo modprobe kvm_intel
 	sudo usermod -aG kvm $USER
 
-k8s: minikube-linux-amd64 kvm
-	sudo install minikube-linux-amd64 /usr/local/bin/minikube
-	minikube start
-
 lttng:
-	$(APT) lttng-tools lttng-modules-dkms
+	$(APT) lttng-tools lttng-modules-dkms liblttng-ust*
 
 
-~/.cargo/env:
+~/.cargo/env: # rustup
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-	source "$HOME/.cargo/env"
+	source "$HOME/cargo/env"
+	rustup install nightly
+	echo "# rust" >> .bashrc
+	echo "export PATH=~/.cargo/bin/:$PATH" >> .bashrc
+	echo "source "$HOME/cargo/env"" >> .bashrc
 
-rust: ~/.cargo/env
-	$(APT) rustc cargo
+
+rustup: ~/.cargo/env
+
+rust: rustup 
 
 # rice
 
