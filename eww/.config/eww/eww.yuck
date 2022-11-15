@@ -1,31 +1,12 @@
-;; Doesn't need to be real time
+;; * System
 (defpoll CPU_USAGE :interval "5s" `awk 'NR==1{print 100*(1-($5/($2+$3+$4+$5+$6+$7+$8+$9+$10+$11)))}' /proc/stat`)
 (defpoll MEM_USAGE :interval "5s" `awk 'NR==1{tot=$2}NR==3{print 100*(1-($2/tot))}' /proc/meminfo`)
 (defpoll BLIGHT :interval "1m" `df /home | awk 'NR==2{print 100*($3/($3+$4))}'`) ;; TODO find real file with usage stat
 (defpoll BATTERY :interval "1m" `cat /sys/class/power_supply/BAT1/capacity`)
 
-
-(defvar IMAGE "/home/ben/Pictures/serious/memories/IMG_7064.jpeg")
-(defvar NAME "Benjamin")
-(defpoll UNAME :interval "5m" `whoami`)
-
 (defwindow system :stacking "fg" :focusable "false" :screen 1 :monitor 0
 	:geometry (geometry :x 150 :y 605 :width 350 :height 325)
 	 (system))
-
-;; (defwindow moral :stacking "fg" :focusable "false" :geometry (geometry :x 500 :y 605 :width 350 :height 325)  (label :text "oof"))
-
-(defwindow profile :stacking "fg" :focusable "false" :screen 1 :monitor 0
-	:geometry (geometry :x 150 :y 150 :width 350 :height 440)
-	 (user))
-
-;; *** widgets ***
-
-(defwidget user [] 
-	(box :class "genwin" :orientation "v" :spacing 35 :space-evenly "false" :vexpand "false" :hexpand "false"
-		    (box :style "background-image: url('${IMAGE}');" :class "face" :halign "center")
-		    (label :class "fullname" :halign "center" :wrap "true" :limit-width 25 :text NAME)
-		    (label :class "username" :halign "center" :wrap "true" :limit-width 25 :text UNAME)))
 
 (defwidget system [] 
 	(box :class "genwin" :vexpand "false" :hexpand "false" 
@@ -43,6 +24,24 @@
 				(label :class "iconbat" :text "🔋")
 				(scale :min 0 :max 100 :value BATTERY :active "false" :draw-value "true")))))
 
+;; * Profile
+
+(defvar IMAGE "/home/ben/Pictures/serious/memories/IMG_7064.jpeg")
+(defvar NAME "Benjamin")
+(defpoll UNAME :interval "5m" `whoami`)
+
+(defwindow profile :stacking "fg" :focusable "false" :screen 1 :monitor 0
+	:geometry (geometry :x 150 :y 150 :width 350 :height 440)
+	 (user))
+
+
+(defwidget user [] 
+	(box :class "genwin" :orientation "v" :spacing 35 :space-evenly "false" :vexpand "false" :hexpand "false"
+		    (box :style "background-image: url('${IMAGE}');" :class "face" :halign "center")
+		    (label :class "fullname" :halign "center" :wrap "true" :limit-width 25 :text NAME)
+		    (label :class "username" :halign "center" :wrap "true" :limit-width 25 :text UNAME)))
+
+;; * Proto
 
 (defwindow proto :stacking "fg" :focusable "false" :screen 1 
   :geometry (geometry :x 150 :y 605 :width 350 :height 325 :anchor "top center")
