@@ -26,28 +26,37 @@ GREEN="\e[32m"
 ENDCOLOR="\e[0m"
 if [ -n "$GUIX_ENVIRONMENT" ]
 then
-    PS1="┌─ ${YELLOW}🖿 \w ${ENDCOLOR}| ${LILA}🤠 \u@\h${ENDCOLOR} | ${GREEN}🕒 \t${ENDCOLOR} | [ENV] \n└─> "
+    PS1="┌─ ${YELLOW} \w ${ENDCOLOR}| ${LILA}\u@\h${ENDCOLOR} | ${GREEN}🕒 \t${ENDCOLOR} | [ENV] \n└─> "
 else
-    PS1="┌─ ${YELLOW}🖿 \w ${ENDCOLOR}| ${LILA}\u@\h${ENDCOLOR} | ${GREEN}🕒 \t${ENDCOLOR} \n└─> "
+    PS1="┌─ ${YELLOW} \w ${ENDCOLOR}| ${LILA}\u@\h${ENDCOLOR} | ${GREEN}🕒 \t${ENDCOLOR} \n└─> "
 fi
 
 CORES="$(grep -c ^processor /proc/cpuinfo)"
 
 # cmd
 alias ls="ls -p --color=auto"
-alias ll="ls -l"
+alias ll="ls -lh"
 alias grep="grep --color=auto"
 alias mk="make -j ${CORES}"
-# apps
-alias emacs="emacsclient -c -a \"\" $@"
-# os
+# alias emacs="emacsclient -c -a \"\" $@"
+
 alias env="guix environment -m"
-alias bu="sudo apt -y update && sudo apt -y upgrade && sudo apt -y autoremove" # big update
-alias qi="sudo apt -y install" # quick install
-alias qu="sudo apt -y update" # quick update
+alias bu="sudo aptitude -y update && sudo aptitude -y upgrade && sudo aptitude -y autoclean" # big update
+alias qi="sudo aptitude -y install" # quick install
+alias qu="sudo aptitude -y update" # quick update
 export PATH=~/.local/bin/:$PATH
 export PATH=~/dotfiles/bin/:$PATH
 
+alias vg="vagrant"
+alias vgu="vagrant up"
+alias vgs="vagrant ssh"
+alias vgh="vagrant halt -f"
+alias vgd="vagrant halt destroy -f"
 
-alias kubectl="minikube kubectl --"
-. "$HOME/.cargo/env"
+alias wordl="curl -s https://www.nytimes.com/svc/wordle/v2/$(date +"%Y-%m-%d").json | jq .solution"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+DOTNET_CLI_TELEMETRY_OPTOUT=1
