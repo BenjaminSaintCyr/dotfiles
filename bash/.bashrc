@@ -40,18 +40,24 @@ alias grep="grep --color=auto"
 alias mk="make -j ${CORES}"
 # alias emacs="emacsclient -c -a \"\" $@"
 
-alias env="guix environment -m"
 alias bu="sudo aptitude -y update && sudo aptitude -y upgrade && sudo aptitude -y autoclean" # big update
 alias qi="sudo aptitude -y install" # quick install
 alias qu="sudo aptitude -y update" # quick update
 export PATH=~/.local/bin/:$PATH
 export PATH=~/dotfiles/bin/:$PATH
 
+# * Vagrant
 alias vg="vagrant"
 alias vgu="vagrant up"
 alias vgs="vagrant ssh"
 alias vgh="vagrant halt -f"
 alias vgd="vagrant halt destroy -f"
+
+# * Kubernetes
+alias k="kubectl"
+function ns () {
+    kubectl config set-context --current --namespace $1
+}
 
 alias wordl="curl -s https://www.nytimes.com/svc/wordle/v2/$(date +"%Y-%m-%d").json | jq .solution"
 
